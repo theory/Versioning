@@ -16,7 +16,7 @@ grep -hiE '^[[:space:]]*select _v.register_patch\(' "$@" | \
                     s/\].*//;
                     @w = /\047([^\047]+)\047/g;
                 }
-                pop @w, $ENV{"PATCH_NAME"} if 0 == ( scalar @w % 2 );
+                push @w, $ENV{"PATCH_NAME"} if ( 0 == @w ) || ( 0 == ( @w % 2 ) );
                 printf "%s %s\n", $ENV{"PATCH_NAME"}, $_ for @w;
             '
     done
