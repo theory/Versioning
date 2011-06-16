@@ -61,6 +61,10 @@ END;
 $$ language plpgsql;
 COMMENT ON FUNCTION _v.register_patch( TEXT, TEXT[], TEXT[] ) IS 'Function to register patches in database. Raises exception if there are conflicts, prerequisites are not installed or the migration has already been installed.';
 
+CREATE OR REPLACE FUNCTION _v.register_patch( TEXT, TEXT[] ) RETURNS setof INT4 AS $$
+    SELECT _v.register_patch( $1, $2, NULL );
+$$ language sql;
+COMMENT ON FUNCTION _v.register_patch( TEXT, TEXT[] ) IS 'Wrapper to allow registration of patches without conflicts.';
 CREATE OR REPLACE FUNCTION _v.register_patch( TEXT ) RETURNS setof INT4 AS $$
     SELECT _v.register_patch( $1, NULL, NULL );
 $$ language sql;
